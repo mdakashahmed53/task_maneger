@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_maneger/UI/Screens/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:task_maneger/utils/app_color.dart';
 
 
 class TaskManegerApp extends StatelessWidget {
@@ -18,19 +19,45 @@ class TaskManegerApp extends StatelessWidget {
 
         return MaterialApp(
           title: 'Task Maneger App',
-
           home: SplashScreen(),
           debugShowCheckedModeBanner: false,
+
+          theme: ThemeData(
+            textTheme: TextTheme(
+              titleLarge: TextStyle(
+                fontSize: 25.sp,
+                fontWeight: FontWeight.w600
+              )
+            ),
+
+            inputDecorationTheme: InputDecorationTheme(
+              filled: true,
+              hoverColor: Colors.white,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide.none
+              ),
+              
+            ),
+
+            filledButtonTheme: FilledButtonThemeData(
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColor.primeryColor,
+                fixedSize: Size.fromWidth(double.maxFinite),
+                padding: EdgeInsets.symmetric(vertical: 12.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)
+                )
+              )
+            )
+
+          ),
         );
-
-
       },
-
     );
-
-
-
-
   }
 }
 

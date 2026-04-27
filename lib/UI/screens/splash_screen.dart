@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_maneger/UI/screens/login_screen.dart';
-import 'package:task_maneger/UI/widget/screen_background.dart';
+import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:task_maneger/utils/asset_path.dart';
 
 class SplashScreen extends StatefulWidget {
