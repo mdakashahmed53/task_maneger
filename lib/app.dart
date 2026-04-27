@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:task_maneger/UI/Screens/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:task_maneger/UI/screens/forget_screen.dart';
+import 'package:task_maneger/UI/screens/pinverification_screen.dart';
+import 'package:task_maneger/UI/screens/signup_screen.dart';
 import 'package:task_maneger/utils/app_color.dart';
 
 
@@ -19,13 +22,12 @@ class TaskManegerApp extends StatelessWidget {
 
         return MaterialApp(
           title: 'Task Maneger App',
-          home: SplashScreen(),
+          home: PinVerificationScreen(),
           debugShowCheckedModeBanner: false,
-
           theme: ThemeData(
             textTheme: TextTheme(
               titleLarge: TextStyle(
-                fontSize: 25.sp,
+                fontSize: 26.sp,
                 fontWeight: FontWeight.w600
               )
             ),
@@ -47,9 +49,12 @@ class TaskManegerApp extends StatelessWidget {
               style: FilledButton.styleFrom(
                 backgroundColor: AppColor.primeryColor,
                 fixedSize: Size.fromWidth(double.maxFinite),
-                padding: EdgeInsets.symmetric(vertical: 12.h),
+                padding: EdgeInsets.symmetric(vertical: 10.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)
+                ),
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
                 )
               )
             )
