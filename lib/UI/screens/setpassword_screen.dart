@@ -6,12 +6,16 @@ import 'package:task_maneger/utils/app_color.dart';
 
 import 'login_screen.dart';
 
-class ForgetScreen extends StatelessWidget {
-  const ForgetScreen({super.key});
+// class name change korte hbe
+class SetPasswordScreen extends StatelessWidget {
+  const SetPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
+    
+    TextEditingController newPassController = TextEditingController();
+    TextEditingController confirmPassController = TextEditingController();
+
 
     return Scaffold(
       body: ScreenBackground(
@@ -22,40 +26,73 @@ class ForgetScreen extends StatelessWidget {
             children: [
               SizedBox(height: 100.h),
               Text(
-                'Your Email Address',
+                'Set Password',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               SizedBox(height: 10.h),
               Text(
-                'A 6 digit verification pin will sent to your email address',
+                'Minimum length password 8 character with Latter and number combination',
                 style: TextStyle(
                   fontSize: 15.sp,
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 12.h),
               // email address
-              TextFormField(
-                controller: emailController,
+
+                TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'email is required';
-                  } else if (!value.contains('@')) {
-                    return 'must be valid email';
+                    return 'password is required';
+                  } else if (value.length < 8) {
+                    return 'password must be 8 charector';
                   } else {
                     return null;
                   }
                 },
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(hintText: 'Email'),
+                controller: newPassController,
+                obscureText: true,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: InputDecoration(hintText: 'New Password'),
               ),
-              SizedBox(height: 12.h),
 
+              SizedBox(height: 12.h),
+              // confirm password
+              // password don't match code problem
+              //
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'password is required';
+                  } else if (value != newPassController.text) {
+                    // return 'password must be 8 charector';
+                    return "Don't match";
+                  } else if (value.length < 8) {
+                    // return "Don't match";
+                    return 'password must be 8 charector';
+                  } else {
+                    return null;
+                  }
+                },
+                controller: confirmPassController,
+                obscureText: true,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: InputDecoration(hintText: 'Confirm Password'),
+              ),
+
+
+           
+
+
+
+              SizedBox(height: 13.h),
+
+              // filled button
               FilledButton(
                 onPressed: () {},
 
-                child: Icon(Icons.arrow_circle_right_outlined, size: 25),
+                child: Text('Confirm', style: TextStyle()),
               ),
 
               SizedBox(height: 30.h),
@@ -68,14 +105,13 @@ class ForgetScreen extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w800,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp
                         ),
                         children: [
                           TextSpan(
                             text: 'Sign in',
-                            style: TextStyle(
-                              color: AppColor.primeryColor,
-                              fontSize: 12.sp,
+                            style: TextStyle(color: AppColor.primeryColor,
+                            fontSize: 12.sp,
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {

@@ -24,18 +24,20 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         child: ScreenBackground(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(30),
             child: Form(
               key: _logInKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 150.h),
+
+                  
                   Text(
                     'Get Started With',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-        
+
                   SizedBox(height: 15.h),
                   // email text field
                   TextFormField(
@@ -69,9 +71,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.visiblePassword,
                     decoration: InputDecoration(hintText: 'Password'),
                   ),
-        
+
                   SizedBox(height: 12.h),
-                   // sign in button
+                  // sign in button
                   FilledButton(
                     onPressed: () {
                       if (_logInKey.currentState!.validate()) {
@@ -82,7 +84,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     child: Icon(Icons.arrow_circle_right_outlined, size: 25),
                   ),
-        
+
+
+
+
                   SizedBox(height: 30.h),
                   Center(
                     child: Column(
@@ -90,29 +95,43 @@ class _LoginScreenState extends State<LoginScreen> {
                         // forget button
                         TextButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgetScreen()));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ForgetScreen(),
+                              ),
+                            );
                           },
                           child: Text(
                             "Forget Password ?",
                             style: TextStyle(color: Colors.grey),
                           ),
                         ),
-        
+
                         RichText(
                           text: TextSpan(
                             text: "Don't have account? ",
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w800,
+                              fontSize: 12.sp,
                             ),
                             children: [
                               TextSpan(
                                 text: ' Sign up',
-                                style: TextStyle(color: AppColor.primeryColor),
-        
+                                style: TextStyle(
+                                  color: AppColor.primeryColor,
+                                  fontSize: 12.sp,
+                                ),
+
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SignUpScreen(),
+                                      ),
+                                    );
                                   },
                               ),
                             ],

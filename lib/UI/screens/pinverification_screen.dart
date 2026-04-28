@@ -11,7 +11,7 @@ class PinVerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
+    TextEditingController OTPController = TextEditingController();
 
     return Scaffold(
       body: ScreenBackground(child: Padding(
@@ -32,7 +32,7 @@ class PinVerificationScreen extends StatelessWidget {
             SizedBox(height: 10.h),
             // email address
             TextFormField(
-              controller: emailController,
+              controller: OTPController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'otp is required';
@@ -68,11 +68,14 @@ class PinVerificationScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w800,
+                        fontSize: 12.sp
                       ),
                       children: [
                         TextSpan(
                           text: 'Sign in',
-                          style: TextStyle(color: AppColor.primeryColor),
+                          style: TextStyle(color: AppColor.primeryColor,
+                          fontSize: 12.sp
+                          ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));

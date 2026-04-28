@@ -11,13 +11,11 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+    TextEditingController newPasswordController = TextEditingController();
     TextEditingController nameController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
     TextEditingController newPassController = TextEditingController();
     TextEditingController confirmPassController = TextEditingController();
-
-
 
     final _singUpkey = GlobalKey<FormState>();
 
@@ -37,7 +35,7 @@ class SignUpScreen extends StatelessWidget {
                       'Join With Us',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-        
+
                     SizedBox(height: 15.h),
                     // person name
                     TextFormField(
@@ -45,7 +43,7 @@ class SignUpScreen extends StatelessWidget {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'name is required';
-                        }  else {
+                        } else {
                           return null;
                         }
                       },
@@ -96,12 +94,12 @@ class SignUpScreen extends StatelessWidget {
                           return null;
                         }
                       },
-                      controller: passwordController,
+                      controller: newPasswordController,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(hintText: 'New Password'),
                     ),
-        
+
                     SizedBox(height: 10.h),
                     // confirm password
                     // password don't match code problem
@@ -113,7 +111,7 @@ class SignUpScreen extends StatelessWidget {
                         } else if (value != newPassController.text) {
                           // return 'password must be 8 charector';
                           return "Don't match";
-                        } else if(value.length < 8) {
+                        } else if (value.length < 8) {
                           // return "Don't match";
                           return 'password must be 8 charector';
                         } else {
@@ -125,9 +123,9 @@ class SignUpScreen extends StatelessWidget {
                       keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(hintText: 'Confirm Password'),
                     ),
-          
+
                     SizedBox(height: 12.h),
-          
+
                     FilledButton(
                       onPressed: () {
                         if (_singUpkey.currentState!.validate()) {
@@ -136,30 +134,37 @@ class SignUpScreen extends StatelessWidget {
                           ).showSnackBar(SnackBar(content: Text('Sign Up ')));
                         }
                       },
-          
+
                       child: Icon(Icons.arrow_circle_right_outlined, size: 25),
                     ),
-          
+
                     SizedBox(height: 30.h),
                     Center(
                       child: Column(
                         children: [
-        
-          
                           RichText(
                             text: TextSpan(
                               text: "Have account? ",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
+                                fontSize: 12.sp,
                               ),
                               children: [
                                 TextSpan(
                                   text: 'Sign in',
-                                  style: TextStyle(color: AppColor.primeryColor),
+                                  style: TextStyle(
+                                    color: AppColor.primeryColor,
+                                    fontSize: 12.sp,
+                                  ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => LoginScreen(),
+                                        ),
+                                      );
                                     },
                                 ),
                               ],
