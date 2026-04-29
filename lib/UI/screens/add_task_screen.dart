@@ -10,7 +10,7 @@ class AddTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleConroller = TextEditingController();
+    TextEditingController titleController = TextEditingController();
     TextEditingController bodyController = TextEditingController();
 
     return Scaffold(
@@ -44,7 +44,7 @@ class AddTaskScreen extends StatelessWidget {
                           return null;
                         }
                       },
-                      controller: titleConroller,
+                      controller: titleController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(hintText: 'Subject'),
                     ),

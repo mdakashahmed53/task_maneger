@@ -21,8 +21,9 @@ class SignUpScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: ScreenBackground(
+        child: ScreenBackground(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Form(
@@ -37,20 +38,22 @@ class SignUpScreen extends StatelessWidget {
                     ),
 
                     SizedBox(height: 15.h),
+
                     // person name
                     TextFormField(
                       controller: nameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'name is required';
-                        } else {
-                          return null;
                         }
+                        return null;
                       },
                       keyboardType: TextInputType.text,
-                      decoration: InputDecoration(hintText: 'Name'),
+                      decoration: const InputDecoration(hintText: 'Name'),
                     ),
+
                     SizedBox(height: 10.h),
+
                     // phone number
                     TextFormField(
                       controller: phoneController,
@@ -59,14 +62,15 @@ class SignUpScreen extends StatelessWidget {
                           return 'phone number is required';
                         } else if (!value.contains('01')) {
                           return 'must be valid phone';
-                        } else {
-                          return null;
                         }
+                        return null;
                       },
                       keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(hintText: 'Mobile'),
+                      decoration: const InputDecoration(hintText: 'Mobile'),
                     ),
+
                     SizedBox(height: 10.h),
+
                     // email address
                     TextFormField(
                       controller: emailController,
@@ -75,20 +79,22 @@ class SignUpScreen extends StatelessWidget {
                           return 'email is required';
                         } else if (!value.contains('@')) {
                           return 'must be valid email';
-                        } else {
-                          return null;
                         }
+                        return null;
                       },
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(hintText: 'Email'),
+                      decoration: const InputDecoration(hintText: 'Email'),
                     ),
+
                     SizedBox(height: 10.h),
+
                     // new password
                     TextFormField(
                       controller: newPasswordController,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(hintText: 'New Password'),
+                      decoration:
+                      const InputDecoration(hintText: 'New Password'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Password is required';
@@ -106,14 +112,14 @@ class SignUpScreen extends StatelessWidget {
                       controller: confirmPassController,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(hintText: 'Confirm Password'),
+                      decoration:
+                      const InputDecoration(hintText: 'Confirm Password'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Password is required';
                         } else if (value.length < 8) {
                           return 'Password must be at least 8 characters';
                         } else if (value != newPasswordController.text) {
-                          // ✅ FIXED HERE
                           return "Passwords don't match";
                         }
                         return null;
@@ -122,20 +128,23 @@ class SignUpScreen extends StatelessWidget {
 
                     SizedBox(height: 12.h),
 
-                    // submit button filledbutton
+                    // submit button
                     FilledButton(
                       onPressed: () {
                         if (_singUpkey.currentState!.validate()) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text('Sign Up ')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Sign Up ')),
+                          );
                         }
                       },
-
-                      child: Icon(Icons.arrow_circle_right_outlined, size: 25),
+                      child: const Icon(
+                        Icons.arrow_circle_right_outlined,
+                        size: 25,
+                      ),
                     ),
 
                     SizedBox(height: 30.h),
+
                     Center(
                       child: Column(
                         children: [
@@ -159,7 +168,8 @@ class SignUpScreen extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => LoginScreen(),
+                                          builder: (context) =>
+                                              LoginScreen(),
                                         ),
                                       );
                                     },

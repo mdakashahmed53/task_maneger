@@ -3,6 +3,7 @@ import 'package:task_maneger/UI/Screens/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_maneger/UI/screens/add_task_screen.dart';
 import 'package:task_maneger/UI/screens/forget_screen.dart';
+import 'package:task_maneger/UI/screens/new_task_screen.dart';
 import 'package:task_maneger/UI/screens/pinverification_screen.dart';
 import 'package:task_maneger/UI/screens/setpassword_screen.dart';
 import 'package:task_maneger/UI/screens/signup_screen.dart';
