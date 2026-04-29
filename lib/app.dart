@@ -6,6 +6,7 @@ import 'package:task_maneger/UI/screens/forget_screen.dart';
 import 'package:task_maneger/UI/screens/pinverification_screen.dart';
 import 'package:task_maneger/UI/screens/setpassword_screen.dart';
 import 'package:task_maneger/UI/screens/signup_screen.dart';
+import 'package:task_maneger/UI/screens/update_profile_screen.dart';
 import 'package:task_maneger/utils/app_color.dart';
 
 
@@ -24,7 +25,7 @@ class TaskManegerApp extends StatelessWidget {
 
         return MaterialApp(
           title: 'Task Maneger App',
-          home: AddTaskScreen(),
+          home: UpdateProfileScreen(),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             textTheme: TextTheme(

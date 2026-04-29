@@ -12,10 +12,8 @@ class SetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    TextEditingController newPassController = TextEditingController();
+    TextEditingController newPasswordController = TextEditingController();
     TextEditingController confirmPassController = TextEditingController();
-
 
     return Scaffold(
       body: ScreenBackground(
@@ -39,52 +37,45 @@ class SetPasswordScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12.h),
-              // email address
-
-                TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'password is required';
-                  } else if (value.length < 8) {
-                    return 'password must be 8 charector';
-                  } else {
-                    return null;
-                  }
-                },
-                controller: newPassController,
+              
+              //new password
+              TextFormField(
+                controller: newPasswordController,
                 obscureText: true,
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(hintText: 'New Password'),
-              ),
-
-              SizedBox(height: 12.h),
-              // confirm password
-              // password don't match code problem
-              //
-              TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'password is required';
-                  } else if (value != newPassController.text) {
-                    // return 'password must be 8 charector';
-                    return "Don't match";
+                    return 'Password is required';
                   } else if (value.length < 8) {
-                    // return "Don't match";
-                    return 'password must be 8 charector';
-                  } else {
-                    return null;
+                    return 'Password must be at least 8 characters';
                   }
+                  return null;
                 },
+              ),
+
+              
+
+              SizedBox(height: 10.h),
+
+              // confirm password
+              TextFormField(
                 controller: confirmPassController,
                 obscureText: true,
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(hintText: 'Confirm Password'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Password is required';
+                  } else if (value.length < 8) {
+                    return 'Password must be at least 8 characters';
+                  } else if (value != newPasswordController.text) {
+                    // ✅ FIXED HERE
+                    return "Passwords don't match";
+                  }
+                  return null;
+                },
               ),
-
-
-           
-
-
 
               SizedBox(height: 13.h),
 
@@ -105,13 +96,14 @@ class SetPasswordScreen extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w800,
-                          fontSize: 12.sp
+                          fontSize: 12.sp,
                         ),
                         children: [
                           TextSpan(
                             text: 'Sign in',
-                            style: TextStyle(color: AppColor.primeryColor,
-                            fontSize: 12.sp,
+                            style: TextStyle(
+                              color: AppColor.primeryColor,
+                              fontSize: 12.sp,
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {

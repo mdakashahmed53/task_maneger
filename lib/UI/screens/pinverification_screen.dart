@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:task_maneger/utils/app_color.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 import 'login_screen.dart';
 
@@ -31,18 +32,20 @@ class PinVerificationScreen extends StatelessWidget {
             ),),
             SizedBox(height: 10.h),
             // email address
-            TextFormField(
-              controller: OTPController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'otp is required';
-                } else {
-                  return null;
-                }
-              },
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(hintText: 'OTP'),
-            ),
+           MaterialPinField(
+               length: 6,
+           theme: MaterialPinTheme(
+             completeFillColor: Colors.white,
+             shape: MaterialPinShape.outlined,
+             borderColor: Colors.white,
+             followingBorderColor: Colors.white,
+             fillColor: Colors.white,
+             filledBorderColor: Colors.white,
+             focusedFillColor: Colors.white,
+
+           ),
+           ),
+
             SizedBox(height: 12.h),
             
             // filled button

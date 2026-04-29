@@ -85,47 +85,44 @@ class SignUpScreen extends StatelessWidget {
                     SizedBox(height: 10.h),
                     // new password
                     TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'password is required';
-                        } else if (value.length < 8) {
-                          return 'password must be 8 charector';
-                        } else {
-                          return null;
-                        }
-                      },
                       controller: newPasswordController,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(hintText: 'New Password'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password is required';
+                        } else if (value.length < 8) {
+                          return 'Password must be at least 8 characters';
+                        }
+                        return null;
+                      },
                     ),
 
                     SizedBox(height: 10.h),
+
                     // confirm password
-                    // password don't match code problem
-                    //
                     TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'password is required';
-                        } else if (value != newPassController.text) {
-                          // return 'password must be 8 charector';
-                          return "Don't match";
-                        } else if (value.length < 8) {
-                          // return "Don't match";
-                          return 'password must be 8 charector';
-                        } else {
-                          return null;
-                        }
-                      },
                       controller: confirmPassController,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(hintText: 'Confirm Password'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password is required';
+                        } else if (value.length < 8) {
+                          return 'Password must be at least 8 characters';
+                        } else if (value != newPasswordController.text) {
+                          // ✅ FIXED HERE
+                          return "Passwords don't match";
+                        }
+                        return null;
+                      },
                     ),
 
                     SizedBox(height: 12.h),
 
+                    // submit button filledbutton
                     FilledButton(
                       onPressed: () {
                         if (_singUpkey.currentState!.validate()) {
@@ -159,7 +156,7 @@ class SignUpScreen extends StatelessWidget {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.pushReplacement(
+                                      Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => LoginScreen(),
