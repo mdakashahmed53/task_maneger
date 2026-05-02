@@ -21,7 +21,7 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
           child: ListView.builder(
               itemCount: 20,
               itemBuilder: (context , index){
-                return TaskCard(taskModel: TaskModel(id: 04, title: 'Demo Task Title', description: 'Demo task description', date: '01/04/2035', status: 'Pending'), statusColor: Colors.purple, refreshParent: () {  },);
+                return TaskCard(taskModel: TaskModel(id: 04, title: 'Progress Task Title', description: 'Progress demo task description in my app, Lorem Text', date: '01/04/2035', status: 'Pending'), statusColor: Colors.purple, refreshParent: () {  },);
 
               }),
         ),

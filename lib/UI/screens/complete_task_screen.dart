@@ -22,7 +22,7 @@ class _CompleteTaskScreenState extends State<CompleteTaskScreen> {
           child: ListView.builder(
               itemCount: 20,
               itemBuilder: (context , index){
-                return TaskCard(taskModel: TaskModel(id: 04, title: 'Demo Task Title', description: 'Demo task description', date: '02/09/2065', status: 'Complete'), statusColor: AppColor.primeryColor, refreshParent: () {  },);
+                return TaskCard(taskModel: TaskModel(id: 04, title: 'Complete Demo Task Title', description: "Complete Demo task description s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled", date: '02/09/2035', status: 'Complete'), statusColor: AppColor.primeryColor, refreshParent: () {  },);
 
               }),
         ),

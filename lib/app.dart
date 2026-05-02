@@ -7,6 +7,7 @@ import 'package:task_maneger/UI/screens/new_task_screen.dart';
 import 'package:task_maneger/UI/screens/pinverification_screen.dart';
 import 'package:task_maneger/UI/screens/setpassword_screen.dart';
 import 'package:task_maneger/UI/screens/signup_screen.dart';
+import 'package:task_maneger/UI/screens/task_details_view_screen.dart';
 import 'package:task_maneger/UI/screens/update_profile_screen.dart';
 import 'package:task_maneger/utils/app_color.dart';
 

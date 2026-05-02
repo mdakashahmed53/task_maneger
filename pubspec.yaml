@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^8.0.2
   image_picker: ^1.2.1
   pin_code_fields: ^9.3.0
+  lottie: ^3.3.3
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+    - assets/anim/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

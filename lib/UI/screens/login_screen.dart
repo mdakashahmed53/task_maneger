@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         //     context,
                         //   ).showSnackBar(SnackBar(content: Text('Login ')));
 
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => MainNavScreen(),
