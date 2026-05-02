@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_maneger/UI/screens/forget_screen.dart';
+import 'package:task_maneger/UI/screens/main_nav_screen.dart';
+import 'package:task_maneger/UI/screens/new_task_screen.dart';
 import 'package:task_maneger/UI/screens/signup_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:task_maneger/utils/app_color.dart';
@@ -33,13 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 150.h),
-                    
-                    
+
                     Text(
                       'Get Started With',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    
+
                     SizedBox(height: 15.h),
                     // email text field
                     TextFormField(
@@ -73,23 +74,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       keyboardType: TextInputType.visiblePassword,
                       decoration: InputDecoration(hintText: 'Password'),
                     ),
-                    
+
                     SizedBox(height: 12.h),
                     // sign in button
                     FilledButton(
                       onPressed: () {
-                        if (_logInKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(
+                        // if (_logInKey.currentState!.validate()) {
+                        //   ScaffoldMessenger.of(
+                        //     context,
+                        //   ).showSnackBar(SnackBar(content: Text('Login ')));
+
+                          Navigator.push(
                             context,
-                          ).showSnackBar(SnackBar(content: Text('Login ')));
-                        }
+                            MaterialPageRoute(
+                              builder: (context) => MainNavScreen(),
+                            ),
+                          );
+
                       },
                       child: Icon(Icons.arrow_circle_right_outlined, size: 25),
                     ),
-                    
-                    
-                    
-                    
+
                     SizedBox(height: 30.h),
                     Center(
                       child: Column(
@@ -109,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(color: Colors.grey),
                             ),
                           ),
-                    
+
                           RichText(
                             text: TextSpan(
                               text: "Don't have account? ",
@@ -125,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: AppColor.primeryColor,
                                     fontSize: 12.sp,
                                   ),
-                    
+
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       Navigator.push(

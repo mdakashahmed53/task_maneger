@@ -12,6 +12,9 @@ class TmAppBar extends StatelessWidget implements PreferredSize{
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppColor.primeryColor,
+      actions: [
+        IconButton(onPressed: (){}, icon: Icon(Icons.logout))
+      ],
       title: Row(
         children: [
           CircleAvatar(

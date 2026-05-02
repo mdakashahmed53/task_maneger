@@ -26,7 +26,7 @@ class TaskManegerApp extends StatelessWidget {
 
         return MaterialApp(
           title: 'Task Maneger App',
-          home: UpdateProfileScreen(),
+          home: SplashScreen(),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             textTheme: TextTheme(
@@ -35,6 +35,8 @@ class TaskManegerApp extends StatelessWidget {
                 fontWeight: FontWeight.w600
               )
             ),
+
+            
 
             inputDecorationTheme: InputDecorationTheme(
               filled: true,
