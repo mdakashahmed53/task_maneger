@@ -1,23 +1,94 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:task_maneger/UI/screens/login_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:task_maneger/utils/app_color.dart';
+import 'package:http/http.dart' as http;
+import 'package:task_maneger/utils/urls.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController newPasswordController = TextEditingController();
-    TextEditingController nameController = TextEditingController();
-    TextEditingController phoneController = TextEditingController();
-    TextEditingController newPassController = TextEditingController();
-    TextEditingController confirmPassController = TextEditingController();
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
 
-    final _singUpkey = GlobalKey<FormState>();
+class _SignUpScreenState extends State<SignUpScreen> {
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController fristNameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController confirmPassController = TextEditingController();
+
+  final singUpkey = GlobalKey<FormState>();
+
+  Future<void>singUp()async{
+    final response = await http.post(Uri.parse(Urls.Registration),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(
+            {
+              "email":emailController.text.trim(),
+              "firstName":fristNameController.text.trim(),
+              "lastName":lastNameController.text.trim(),
+              "mobile":phoneController.text.trim(),
+              "password":newPasswordController.text.trim()
+            }
+        )
+    );
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print(data);
+
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Sign up successful')),
+      // );
+      _showSingUpAlert();
+      goLoginPage();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sign up failed')),
+      );
+    }
+  }
+
+  Future<void>goLoginPage()async{
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+  }
+  
+  // alert dialog
+  
+  void _showSingUpAlert(){
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset('assets/anim/done.json', height: 200),
+            Text('Successful', style: GoogleFonts.lobster(
+              fontSize: 30
+            ),)
+          ],
+        ),
+      );
+    });
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
 
     return Scaffold(
       body: SafeArea(
@@ -27,21 +98,26 @@ class SignUpScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Form(
-                key: _singUpkey,
+                key: singUpkey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 80.h),
-                    Text(
-                      'Join With Us',
-                      style: Theme.of(context).textTheme.titleLarge,
+                    SizedBox(height: 40.h),
+                    InkWell(
+                      onTap: (){
+                        _showSingUpAlert();
+                      },
+                      child: Text(
+                        'Join With Us',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
 
                     SizedBox(height: 15.h),
 
                     // person name
                     TextFormField(
-                      controller: nameController,
+                      controller: fristNameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'name is required';
@@ -49,7 +125,22 @@ class SignUpScreen extends StatelessWidget {
                         return null;
                       },
                       keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(hintText: 'Name'),
+                      decoration: const InputDecoration(hintText: 'First Name'),
+                    ),
+
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    TextFormField(
+                      controller: lastNameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'name is required';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(hintText: 'Last Name'),
                     ),
 
                     SizedBox(height: 10.h),
@@ -131,10 +222,14 @@ class SignUpScreen extends StatelessWidget {
                     // submit button
                     FilledButton(
                       onPressed: () {
-                        if (_singUpkey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Sign Up ')),
-                          );
+                        if (singUpkey.currentState!.validate()) {
+
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   const SnackBar(content: Text('Sign Up ')),
+                          // );
+
+                          singUp();
+
                         }
                       },
                       child: const Icon(
@@ -188,5 +283,16 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    fristNameController.dispose();
+    lastNameController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    newPasswordController.dispose();
+    super.dispose();
   }
 }

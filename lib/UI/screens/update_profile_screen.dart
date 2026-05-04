@@ -15,57 +15,55 @@ class UpdateProfileScreen extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
     TextEditingController confirmPassController = TextEditingController();
-    
-    void _showButtomModelSheet(){
-      showModalBottomSheet(context: context, builder: (context){
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
 
-                children: [
-                  Column(
-                    children: [
-                      IconButton(onPressed: (){}, icon: Icon(Icons.camera_alt_outlined, size: 80,)),
-                      Text('Camera', style: TextStyle(
-                        fontSize: 20
-                      ),)
-                    ],
-                  ),
+    void _showButtomModelSheet() {
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.camera_alt_outlined, size: 80),
+                        ),
+                        Text('Camera', style: TextStyle(fontSize: 20)),
+                      ],
+                    ),
 
-                  Column(
-                    children: [
-                      IconButton(onPressed: (){}, icon: Icon(Icons.photo, size: 80,)),
-                      Text('Album', style: TextStyle(
-                          fontSize: 20
-                      ),)
-                    ],
-                  ),
+                    Column(
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.photo, size: 80),
+                        ),
+                        Text('Album', style: TextStyle(fontSize: 20)),
+                      ],
+                    ),
 
-
-                  // Image.asset('assets/images/camera.png', width: 80, height: 80,),
-                  // SizedBox(
-                  //   width: 10.w,
-                  // ),
-                  // Image.asset('assets/images/galary.png', height: 80, width: 80,)
-                  //
-
-                  SizedBox(height: 40,)
-
-                ],
+                    // Image.asset('assets/images/camera.png', width: 80, height: 80,),
+                    // SizedBox(
+                    //   width: 10.w,
+                    // ),
+                    // Image.asset('assets/images/galary.png', height: 80, width: 80,)
+                    //
+                    SizedBox(height: 40),
+                  ],
+                ),
               ),
-            ),
-          ],
-        );
-      });
+            ],
+          );
+        },
+      );
     }
-    
-    
 
     return Scaffold(
-
       appBar: TmAppBar(),
       body: SafeArea(
         child: ScreenBackground(
@@ -74,7 +72,7 @@ class UpdateProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 30.h),
-                    
+
                 // from
                 Padding(
                   padding: const EdgeInsets.all(35),
@@ -85,9 +83,9 @@ class UpdateProfileScreen extends StatelessWidget {
                         'Update Profile',
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
-                    
+
                       SizedBox(height: 15.h),
-                    
+
                       // image picker working....
                       // Align(
                       //   alignment: Alignment.center,
@@ -95,7 +93,7 @@ class UpdateProfileScreen extends StatelessWidget {
                       //     hoverColor: Colors.grey,
                       //     focusColor: Colors.green,
                       //     onTap: (){
-                    
+
                       //     },
                       //     child: ClipRRect(
                       //       borderRadius: BorderRadius.circular(100),
@@ -108,43 +106,49 @@ class UpdateProfileScreen extends StatelessWidget {
                       //     ),
                       //   ),
                       // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            fit: FlexFit.tight,
-                            flex: 2,
-                            child: InkWell(
-                              onTap: (){
-                                _showButtomModelSheet();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                      InkWell(
+                        onTap: (){
+                          _showButtomModelSheet();
+                        },
+                        child: Container(
+                          height: 42.h,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5)
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
                                 height: 42.h,
-                                decoration: BoxDecoration(color: Colors.blueGrey),
-                                child: Text('Photos', style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                                  
-                                ),),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(color: Colors.blueGrey,
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(10),
+                                  topLeft: Radius.circular(10)
+                                )
+                                ),
+                                child: Text(
+                                  'Photos',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          SizedBox(width: 3.w,),
-                    
-                          Flexible(
-                            flex: 4,
-                            child: Container(
-                              color: Colors.black38,
-                              child: TextFormField(
+                              SizedBox(
+                                width: 7.w,
                               ),
-                            ),
+
+                              Expanded(child: Text('Update Image'))
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    
+
                       SizedBox(height: 10.h),
-                    
+
                       // person name
                       TextFormField(
                         controller: nameController,
@@ -191,7 +195,7 @@ class UpdateProfileScreen extends StatelessWidget {
                         decoration: InputDecoration(hintText: 'Email'),
                       ),
                       SizedBox(height: 10.h),
-                    
+
                       // new password
                       TextFormField(
                         controller: newPasswordController,
@@ -207,15 +211,17 @@ class UpdateProfileScreen extends StatelessWidget {
                           return null;
                         },
                       ),
-                    
+
                       SizedBox(height: 10.h),
-                    
+
                       // confirm password
                       TextFormField(
                         controller: confirmPassController,
                         obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
-                        decoration: InputDecoration(hintText: 'Confirm Password'),
+                        decoration: InputDecoration(
+                          hintText: 'Confirm Password',
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Password is required';
@@ -228,14 +234,17 @@ class UpdateProfileScreen extends StatelessWidget {
                           return null;
                         },
                       ),
-                    
+
                       SizedBox(height: 12.h),
-                    
+
                       // submit button filledbutton
                       FilledButton(
                         onPressed: () {},
-                    
-                        child: Icon(Icons.arrow_circle_right_outlined, size: 25),
+
+                        child: Icon(
+                          Icons.arrow_circle_right_outlined,
+                          size: 25,
+                        ),
                       ),
                     ],
                   ),
@@ -244,7 +253,6 @@ class UpdateProfileScreen extends StatelessWidget {
             ),
           ),
         ),
-
       ),
     );
   }

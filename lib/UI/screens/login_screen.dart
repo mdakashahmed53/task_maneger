@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +9,8 @@ import 'package:task_maneger/UI/screens/new_task_screen.dart';
 import 'package:task_maneger/UI/screens/signup_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:task_maneger/utils/app_color.dart';
+import 'package:http/http.dart' as http;
+import 'package:task_maneger/utils/urls.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,9 +20,35 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _logInKey = GlobalKey<FormState>();
+  
+  Future<void>logIn()async{
+    final response = await http.post(Uri.parse(Urls.Login),
+    headers: {
+      'Content-Type':'application/json'
+    },
+      body: jsonEncode(
+        {
+          "email":emailController.text.trim(),
+          "password":passwordController.text.trim()
+        }
+      )
+    );
+
+    print(response.statusCode);
+
+    final data = jsonDecode(response.body);
+    if(response.statusCode == 200 && 'status' == 'success'){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>MainNavScreen()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(content: Text('Invalid Email or Password')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,18 +109,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     // sign in button
                     FilledButton(
                       onPressed: () {
-                        // if (_logInKey.currentState!.validate()) {
-                        //   ScaffoldMessenger.of(
-                        //     context,
-                        //   ).showSnackBar(SnackBar(content: Text('Login ')));
+                        if (_logInKey.currentState!.validate()) {
+                          
+                          
+                          // ScaffoldMessenger.of(
+                          //   context,
+                          // ).showSnackBar(SnackBar(content: Text('Login ')));
+                          logIn();
+                          
 
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MainNavScreen(),
-                            ),
-                          );
-
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => MainNavScreen(),
+                          //   ),
+                          // );
+                        }
                       },
                       child: Icon(Icons.arrow_circle_right_outlined, size: 25),
                     ),
