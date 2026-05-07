@@ -1,16 +1,30 @@
+import 'dart:nativewrappers/_internal/vm/bin/vmservice_io.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:http/http.dart' as http;
 import 'package:task_maneger/UI/screens/update_profile_screen.dart';
 
 import '../../utils/app_color.dart';
+import '../../utils/urls.dart';
 
 class TmAppBar extends StatelessWidget implements PreferredSize{
   const TmAppBar({
     super.key,
   });
 
+
+
+
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
+
+
     return InkWell(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateProfileScreen()));
@@ -35,7 +49,7 @@ class TmAppBar extends StatelessWidget implements PreferredSize{
                 Text('Md. Akash Ahmed', style: Theme.of(context).textTheme.titleSmall!.copyWith(
                     color: Colors.white
                 )),
-                Text('akash@gmail.com', style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                Text(, style: Theme.of(context).textTheme.titleSmall!.copyWith(
                     color: Colors.white
                 )),
               ],

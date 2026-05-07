@@ -39,10 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     print(response.statusCode);
+    print(response.body);
 
     final data = jsonDecode(response.body);
-    if(response.statusCode == 200 && 'status' == 'success'){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>MainNavScreen()));
+    if(response.statusCode == 200 && data['status'] == 'success'){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MainNavScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
          SnackBar(content: Text('Invalid Email or Password')),
@@ -93,8 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'password is required';
-                        } else if (value.length < 8) {
-                          return 'password must be 8 charecter';
+                        } else if (value.length < 6) {
+                          return 'password must be 6 charecter';
                         } else {
                           return null;
                         }
@@ -190,4 +191,13 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
 }
+

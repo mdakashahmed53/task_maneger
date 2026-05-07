@@ -64,7 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void>goLoginPage()async{
     await Future.delayed(Duration(seconds: 2));
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
   }
   
   // alert dialog
@@ -189,8 +189,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Password is required';
-                        } else if (value.length < 8) {
-                          return 'Password must be at least 8 characters';
+                        } else if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
                         }
                         return null;
                       },
@@ -208,8 +208,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Password is required';
-                        } else if (value.length < 8) {
-                          return 'Password must be at least 8 characters';
+                        } else if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
                         } else if (value != newPasswordController.text) {
                           return "Passwords don't match";
                         }
