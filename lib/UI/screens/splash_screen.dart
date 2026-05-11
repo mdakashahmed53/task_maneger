@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_maneger/UI/screens/login_screen.dart';
+import 'package:task_maneger/UI/screens/main_nav_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
-import 'package:task_maneger/utils/asset_path.dart';
 import 'package:lottie/lottie.dart';
+import 'package:task_maneger/controller/auth_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,7 +16,17 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   Future<void>NextPageMove()async{
     await Future.delayed(Duration(seconds: 5));
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+    await AuthController.getUserData();
+    final bool isLogin = await AuthController.isUserLogIn();
+
+    if(isLogin){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MainNavScreen()));
+    } else {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    }
+    // Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+
   }
 
   @override

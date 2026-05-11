@@ -41,6 +41,8 @@ dependencies:
   pin_code_fields: ^9.3.0
   lottie: ^3.3.3
   http: ^1.6.0
+  shared_preferences: ^2.5.5
+  logger: ^2.7.0
 
 dev_dependencies:
   flutter_test:

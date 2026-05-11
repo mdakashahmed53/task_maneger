@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_maneger/UI/screens/task_details_view_screen.dart';
-import 'package:task_maneger/data/task_model.dart';
+import 'package:task_maneger/data/model/task_model.dart';
 
 class TaskCard extends StatelessWidget {
   final TaskModel taskModel;

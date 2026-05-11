@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:task_maneger/UI/screens/login_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
+import 'package:task_maneger/data/model/api_response.dart';
+import 'package:task_maneger/data/service/api_caller.dart';
 import 'package:task_maneger/utils/app_color.dart';
 import 'package:http/http.dart' as http;
 import 'package:task_maneger/utils/urls.dart';
@@ -29,38 +31,62 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final singUpkey = GlobalKey<FormState>();
 
-  Future<void>singUp()async{
-    final response = await http.post(Uri.parse(Urls.Registration),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(
-            {
-              "email":emailController.text.trim(),
-              "firstName":fristNameController.text.trim(),
-              "lastName":lastNameController.text.trim(),
-              "mobile":phoneController.text.trim(),
-              "password":newPasswordController.text.trim()
-            }
-        )
+  // Future<void>singUp()async{
+  //   final response = await http.post(Uri.parse(Urls.Registration),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: jsonEncode(
+  //           {
+  //             "email":emailController.text.trim(),
+  //             "firstName":fristNameController.text.trim(),
+  //             "lastName":lastNameController.text.trim(),
+  //             "mobile":phoneController.text.trim(),
+  //             "password":newPasswordController.text.trim()
+  //           }
+  //       )
+  //   );
+  //   print(response.statusCode);
+  //
+  //   if (response.statusCode == 200) {
+  //     final data = jsonDecode(response.body);
+  //     print(data);
+  //
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //   SnackBar(content: Text('Sign up successful')),
+  //     // );
+  //     _showSingUpAlert();
+  //     goLoginPage();
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Sign up failed')),
+  //     );
+  //   }
+  // }
+
+  Future<void>signUp()async{
+    Map<String,dynamic>requestBody = {
+      "email":emailController.text.trim(),
+      "firstName":fristNameController.text,
+      "lastName":lastNameController.text,
+      "mobile":phoneController.text.trim(),
+      "password":newPasswordController.text.trim()
+    };
+
+    final ApiResponse response = await ApiCaller.postRequest(URL: Urls.Registration,
+    body: requestBody,
     );
-    print(response.statusCode);
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print(data);
-
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('Sign up successful')),
-      // );
+    if(response.isSuccess){
       _showSingUpAlert();
       goLoginPage();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign up failed')),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('This email is already registered!')));
     }
+
   }
+
+
 
   Future<void>goLoginPage()async{
     await Future.delayed(Duration(seconds: 2));
@@ -228,7 +254,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           //   const SnackBar(content: Text('Sign Up ')),
                           // );
 
-                          singUp();
+                          signUp();
 
                         }
                       },
@@ -260,7 +286,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.push(
+                                      Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>

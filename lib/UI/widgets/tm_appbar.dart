@@ -1,17 +1,19 @@
-import 'dart:nativewrappers/_internal/vm/bin/vmservice_io.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:task_maneger/UI/screens/update_profile_screen.dart';
+import 'package:task_maneger/controller/auth_controller.dart';
+import 'package:task_maneger/data/model/user_model.dart';
 
 import '../../utils/app_color.dart';
-import '../../utils/urls.dart';
+
 
 class TmAppBar extends StatelessWidget implements PreferredSize{
   const TmAppBar({
     super.key,
   });
+
 
 
 
@@ -46,10 +48,10 @@ class TmAppBar extends StatelessWidget implements PreferredSize{
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Md. Akash Ahmed', style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                Text('${AuthController.userData!.firstName ?? ''} ${AuthController.userData!.lastName ?? ""}', style: Theme.of(context).textTheme.titleSmall!.copyWith(
                     color: Colors.white
                 )),
-                Text(, style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                Text(AuthController.userData!.email.toString() ?? ''  , style: Theme.of(context).textTheme.titleSmall!.copyWith(
                     color: Colors.white
                 )),
               ],

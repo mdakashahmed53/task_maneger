@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 
-import '../../data/task_model.dart';
+import '../../data/model/task_model.dart';
 import '../widgets/task_card.dart';
 
 class ProgressTaskScreen extends StatefulWidget {

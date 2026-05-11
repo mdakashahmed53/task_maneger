@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_maneger/UI/screens/forget_screen.dart';
 import 'package:task_maneger/UI/screens/main_nav_screen.dart';
-import 'package:task_maneger/UI/screens/new_task_screen.dart';
 import 'package:task_maneger/UI/screens/signup_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
+import 'package:task_maneger/controller/auth_controller.dart';
+import 'package:task_maneger/data/model/api_response.dart';
+import 'package:task_maneger/data/model/user_model.dart';
+import 'package:task_maneger/data/service/api_caller.dart';
 import 'package:task_maneger/utils/app_color.dart';
 import 'package:http/http.dart' as http;
 import 'package:task_maneger/utils/urls.dart';
@@ -24,32 +27,64 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _logInKey = GlobalKey<FormState>();
-  
-  Future<void>logIn()async{
-    final response = await http.post(Uri.parse(Urls.Login),
-    headers: {
-      'Content-Type':'application/json'
-    },
-      body: jsonEncode(
-        {
-          "email":emailController.text.trim(),
-          "password":passwordController.text.trim()
-        }
-      )
-    );
 
-    print(response.statusCode);
-    print(response.body);
+  Future<void>_signIn()async{
+    Map<String,dynamic> requestBody = {
+      "email":emailController.text.trim(),
+      "password":passwordController.text.trim()
+    };
 
-    final data = jsonDecode(response.body);
-    if(response.statusCode == 200 && data['status'] == 'success'){
+    final ApiResponse response = await ApiCaller.postRequest(URL: Urls.Login, body: requestBody);
+
+    // logic buji nai
+    if(response.isSuccess){
+      UserModel model = UserModel.fromJson(response.responseData['data']);
+      String accessToken = response.responseData['token'];
+
+      // user data & token save kora hoiche
+      AuthController.saveUserData(model, accessToken);
+
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Log In...'))
+      );
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MainNavScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text('Invalid Email or Password')),
+          SnackBar(content: Text('Invalid Email Or Password'))
       );
     }
+
+
   }
+  
+  // Future<void>logIn()async{
+  //   final response = await http.post(Uri.parse(Urls.Login),
+  //   headers: {
+  //     'Content-Type':'application/json'
+  //   },
+  //     body: jsonEncode(
+  //       {
+  //         "email":emailController.text.trim(),
+  //         "password":passwordController.text.trim()
+  //       }
+  //     )
+  //   );
+  //
+  //   print(response.statusCode);
+  //   print(response.body);
+  //
+  //   final data = jsonDecode(response.body);
+  //   if(response.statusCode == 200 && data['status'] == 'success'){
+  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MainNavScreen()));
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //        SnackBar(content: Text('Invalid Email or Password')),
+  //     );
+  //   }
+  // }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +151,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           // ScaffoldMessenger.of(
                           //   context,
                           // ).showSnackBar(SnackBar(content: Text('Login ')));
-                          logIn();
-                          
+                          // logIn();
+                          _signIn();
 
                           // Navigator.pushReplacement(
                           //   context,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:task_maneger/utils/app_color.dart';
 
-import '../../data/task_model.dart';
+import '../../data/model/task_model.dart';
 import '../widgets/task_card.dart';
 
 class CompleteTaskScreen extends StatefulWidget {
