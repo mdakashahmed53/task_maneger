@@ -1,65 +1,123 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:task_maneger/UI/screens/main_nav_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:task_maneger/UI/widgets/tm_appbar.dart';
+import 'package:task_maneger/controller/auth_controller.dart';
+import 'package:task_maneger/data/model/api_response.dart';
+import 'package:task_maneger/data/model/user_model.dart';
+import 'package:task_maneger/data/service/api_caller.dart';
+import 'package:task_maneger/utils/urls.dart';
 
-class UpdateProfileScreen extends StatelessWidget {
+class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController newPasswordController = TextEditingController();
-    TextEditingController nameController = TextEditingController();
-    TextEditingController phoneController = TextEditingController();
-    TextEditingController confirmPassController = TextEditingController();
+  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+}
 
-    void _showButtomModelSheet() {
-      showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.camera_alt_outlined, size: 80),
-                        ),
-                        Text('Camera', style: TextStyle(fontSize: 20)),
-                      ],
-                    ),
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
-                    Column(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.photo, size: 80),
-                        ),
-                        Text('Album', style: TextStyle(fontSize: 20)),
-                      ],
-                    ),
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    UserModel user = AuthController.userData!;
 
-                    // Image.asset('assets/images/camera.png', width: 80, height: 80,),
-                    // SizedBox(
-                    //   width: 10.w,
-                    // ),
-                    // Image.asset('assets/images/galary.png', height: 80, width: 80,)
-                    //
-                    SizedBox(height: 40),
-                  ],
-                ),
+    firstnameController.text = user.firstName!;
+    lastNameController.text = user.lastName!;
+    phoneController.text = user.mobile!;
+    emailController.text = user.email!;
+
+  }
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+
+  void _showButtomModelSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.camera_alt_outlined, size: 80),
+                      ),
+                      Text('Camera', style: TextStyle(fontSize: 20)),
+                    ],
+                  ),
+
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.photo, size: 80),
+                      ),
+                      Text('Album', style: TextStyle(fontSize: 20)),
+                    ],
+                  ),
+
+                  // Image.asset('assets/images/camera.png', width: 80, height: 80,),
+                  // SizedBox(
+                  //   width: 10.w,
+                  // ),
+                  // Image.asset('assets/images/galary.png', height: 80, width: 80,)
+                  //
+                  SizedBox(height: 40),
+                ],
               ),
-            ],
-          );
-        },
-      );
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void>updateProfile()async{
+    Map<String, dynamic>requestBody = {
+      "email":emailController.text.trim(),
+      "firstName":firstnameController.text,
+      "lastName":lastNameController.text,
+      "mobile":phoneController.text.trim(),
+    };
+
+    if(newPasswordController.text.isNotEmpty){
+      requestBody['password']  = newPasswordController.text.trim();
     }
+
+    final ApiResponse response = await ApiCaller.postRequest(URL: Urls.updateProfile, body: requestBody);
+
+    if(response.isSuccess){
+      UserModel userModel = UserModel(
+        sId: AuthController.userData?.sId,
+        email: emailController.text.trim(),
+        firstName: firstnameController.text,
+        lastName: lastNameController.text,
+        mobile: phoneController.text.trim(),
+      );
+
+      AuthController.updateUserData(userModel);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MainNavScreen()));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile Updated')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile Update Failed')));
+      print(response.responseData['data']);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: TmAppBar(),
@@ -84,26 +142,7 @@ class UpdateProfileScreen extends StatelessWidget {
 
                       SizedBox(height: 15.h),
 
-                      // image picker working....
-                      // Align(
-                      //   alignment: Alignment.center,
-                      //   child: InkWell(
-                      //     hoverColor: Colors.grey,
-                      //     focusColor: Colors.green,
-                      //     onTap: (){
 
-                      //     },
-                      //     child: ClipRRect(
-                      //       borderRadius: BorderRadius.circular(100),
-                      //       child: Image.network(
-                      //         'https://media.licdn.com/dms/image/v2/D4D03AQFvwSL9TeVHVA/profile-displayphoto-scale_200_200/B4DZiiOC4GGgAc-/0/1755068250704?e=2147483647&v=beta&t=CwZzl7bG0j-wFxX0m4C4TpT4enC29-UIIlLFA5zZEuk',
-                      //         width: 80.w,
-                      //         height: 70.h,
-                      //         fit: BoxFit.cover,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       InkWell(
                         onTap: (){
                           _showButtomModelSheet();
@@ -149,7 +188,7 @@ class UpdateProfileScreen extends StatelessWidget {
 
                       // person name
                       TextFormField(
-                        controller: nameController,
+                        controller: firstnameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'name is required';
@@ -158,7 +197,20 @@ class UpdateProfileScreen extends StatelessWidget {
                           }
                         },
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(hintText: 'Name'),
+                        decoration: InputDecoration(hintText: 'First Name'),
+                      ),
+                      SizedBox(height: 10.h),
+                      TextFormField(
+                        controller: lastNameController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'name is required';
+                          } else {
+                            return null;
+                          }
+                        },
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(hintText: 'Last Name'),
                       ),
                       SizedBox(height: 10.h),
                       // phone number
@@ -199,7 +251,7 @@ class UpdateProfileScreen extends StatelessWidget {
                         controller: newPasswordController,
                         obscureText: true,
                         keyboardType: TextInputType.visiblePassword,
-                        decoration: InputDecoration(hintText: 'New Password'),
+                        decoration: InputDecoration(hintText: 'Password'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Password is required';
@@ -212,32 +264,15 @@ class UpdateProfileScreen extends StatelessWidget {
 
                       SizedBox(height: 10.h),
 
-                      // confirm password
-                      TextFormField(
-                        controller: confirmPassController,
-                        obscureText: true,
-                        keyboardType: TextInputType.visiblePassword,
-                        decoration: InputDecoration(
-                          hintText: 'Confirm Password',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Password is required';
-                          } else if (value.length < 8) {
-                            return 'Password must be at least 8 characters';
-                          } else if (value != newPasswordController.text) {
-                            // ✅ FIXED HERE
-                            return "Passwords don't match";
-                          }
-                          return null;
-                        },
-                      ),
+
 
                       SizedBox(height: 12.h),
 
                       // submit button filledbutton
                       FilledButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          updateProfile();
+                        },
 
                         child: Icon(
                           Icons.arrow_circle_right_outlined,

@@ -4,6 +4,7 @@ import 'package:task_maneger/UI/screens/complete_task_screen.dart';
 import 'package:task_maneger/UI/screens/new_task_screen.dart';
 import 'package:task_maneger/UI/screens/progress_task_screen.dart';
 import 'package:task_maneger/UI/widgets/tm_appbar.dart';
+import 'package:task_maneger/controller/auth_controller.dart';
 
 class MainNavScreen extends StatefulWidget {
   const MainNavScreen({super.key});
@@ -21,6 +22,18 @@ class _MainNavScreenState extends State<MainNavScreen> {
     CompleteTaskScreen(),
     CancelTaskScreen()
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
+  void getData()async{
+    await AuthController.getUserData();
+     AuthController.userData;
+  }
 
 
   @override

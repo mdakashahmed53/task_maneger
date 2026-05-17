@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // user data & token save kora hoiche
       AuthController.saveUserData(model, accessToken);
-
+      await AuthController.getUserData();
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Log In...'))
@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MainNavScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid Email Or Password'))
+          SnackBar(content: Text(response.responseData['data'].toString()))
       );
     }
 

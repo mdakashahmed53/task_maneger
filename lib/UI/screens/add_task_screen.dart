@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:task_maneger/UI/screens/main_nav_screen.dart';
+import 'package:task_maneger/UI/screens/new_task_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:http/http.dart' as http;
+import 'package:task_maneger/data/model/api_response.dart';
+import 'package:task_maneger/data/service/api_caller.dart';
 import 'package:task_maneger/utils/urls.dart';
 
 import '../widgets/tm_appbar.dart';
@@ -22,24 +26,25 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   TextEditingController bodyController = TextEditingController();
 
   Future<void> addTask() async {
-    final response = await http.post(
-      Uri.parse(Urls.createTask),
-      headers: {
-        // 'Content-Type': 'application/json'
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        "title": titleController.text,
-        "description": bodyController.text,
-        "status": "New",
-      }),
+    Map<String, dynamic> bodyRequest = {
+      "title": titleController.text,
+      "description": bodyController.text,
+      "status": "New",
+    };
+
+    final ApiResponse response = await ApiCaller.postRequest(
+      URL: Urls.createTask,
+      body: bodyRequest,
     );
 
-    print(response.statusCode);
-    print(response.body);
-    final data = jsonDecode(response.body);
-    if (response.statusCode == 200 && data['status'] == 'success') {
-      _showAddTaskAlert();
+    if (response.isSuccess) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Task Added')));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainNavScreen()),
+      );
     } else {
       ScaffoldMessenger.of(
         context,

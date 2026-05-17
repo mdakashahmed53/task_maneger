@@ -3,17 +3,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_maneger/UI/screens/pinverification_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
+import 'package:task_maneger/data/model/api_response.dart';
+import 'package:task_maneger/data/service/api_caller.dart';
 import 'package:task_maneger/utils/app_color.dart';
+import 'package:task_maneger/utils/urls.dart';
 
 import 'login_screen.dart';
 
-class ForgetScreen extends StatelessWidget {
+class ForgetScreen extends StatefulWidget {
   const ForgetScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
+  State<ForgetScreen> createState() => _ForgetScreenState();
+}
 
+class _ForgetScreenState extends State<ForgetScreen> {
+  TextEditingController emailController = TextEditingController();
+
+  final  _fromKey = GlobalKey<FormState>();
+
+
+   Future<void> forgetPassword(String email) async {
+    ApiResponse response = await ApiCaller.getRequest(
+      URL: Urls.recoveryEmailVerify(email),
+    );
+
+    if (response.isSuccess) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              PinVerificationScreen(email: emailController.text),
+        ),
+      );
+      print(response.responseData['data']);
+    } else {
+      print(response.responseData);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.responseData['data'])));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: ScreenBackground(
@@ -54,20 +85,17 @@ class ForgetScreen extends StatelessWidget {
                     decoration: InputDecoration(hintText: 'Email'),
                   ),
                   SizedBox(height: 12.h),
-                    
+
                   FilledButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PinVerificationScreen(),
-                        ),
-                      );
+
+                        forgetPassword(emailController.text);
+
                     },
-                    
+
                     child: Icon(Icons.arrow_circle_right_outlined, size: 25),
                   ),
-                    
+
                   SizedBox(height: 30.h),
                   Center(
                     child: Column(

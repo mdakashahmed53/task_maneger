@@ -14,13 +14,13 @@ class ApiCaller{
     _logger.i(URL);
     Response response = await get(Uri.parse(URL),
     headers: {
-      'token':AuthController.accessToken ?? '',
+      'token':?AuthController.accessToken,
     }
 
     );
     _logger.i(response.statusCode);
     _logger.i(response.body);
-    // working now here >>>>>>
+
 
     if(response.statusCode == 200){
       return ApiResponse(responseCode: response.statusCode, responseData: jsonDecode(response.body), isSuccess: true);
@@ -38,6 +38,8 @@ class ApiCaller{
     headers: {
       "Content-Type":"application/json",
       "Accept":"application/json",
+
+
       'token':AuthController.accessToken ?? ''
     },
 

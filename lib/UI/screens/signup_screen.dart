@@ -81,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _showSingUpAlert();
       goLoginPage();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('This email is already registered!')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.responseData['data'])));
     }
 
   }

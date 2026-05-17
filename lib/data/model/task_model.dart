@@ -1,25 +1,25 @@
 class TaskModel {
-  final int id;
+  final String id;
   final String title;
   final String description;
-  final String date;
+  final String createdDate;
   final String status; // যেমন: 'Pending', 'Completed'
 
   TaskModel({
     required this.id,
     required this.title,
     required this.description,
-    required this.date,
+    required this.createdDate,
     required this.status,
   });
 
   // JSON থেকে ডেটা মডেলে কনভার্ট করার জন্য
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
-      id: json['id'],
+      id: json['_id'],
       title: json['title'],
       description: json['description'],
-      date: json['date'],
+      createdDate: json['createdDate'] ?? '',
       status: json['status'],
     );
   }
@@ -30,7 +30,7 @@ class TaskModel {
       'id': id,
       'title': title,
       'description': description,
-      'date': date,
+      'createdDate': createdDate,
       'status': status,
     };
   }

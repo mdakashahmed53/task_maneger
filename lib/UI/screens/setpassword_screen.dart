@@ -2,20 +2,53 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
+import 'package:task_maneger/controller/auth_controller.dart';
+import 'package:task_maneger/data/model/api_response.dart';
+import 'package:task_maneger/data/model/user_model.dart';
+import 'package:task_maneger/data/service/api_caller.dart';
 import 'package:task_maneger/utils/app_color.dart';
+import 'package:task_maneger/utils/urls.dart';
 
 import 'login_screen.dart';
 
 // class name change korte hbe
-class SetPasswordScreen extends StatelessWidget {
-  const SetPasswordScreen({super.key});
+class SetPasswordScreen extends StatefulWidget {
+  final String email;
+  final String otp;
+
+  const SetPasswordScreen({super.key, required this.email, required this.otp});
+
+  @override
+  State<SetPasswordScreen> createState() => _SetPasswordScreenState();
+}
+
+class _SetPasswordScreenState extends State<SetPasswordScreen> {
+
+  TextEditingController newPasswordController = TextEditingController();
+  // TextEditingController confirmPassController = TextEditingController();
+
+  final _setPinKey = GlobalKey<FormState>();
+
+  Future<void>updatePassword()async{
+    Map<String, dynamic>requestBody ={
+      "email":widget.email,
+      "OTP": widget.otp,
+      "password":newPasswordController.text.trim()
+    };
+
+    ApiResponse response = await ApiCaller.postRequest(URL: Urls.recoveryPassword, body: requestBody);
+
+    if(response.isSuccess){
+
+      print(response.responseData['data'].toString());
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.responseData['data'])));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController newPasswordController = TextEditingController();
-    TextEditingController confirmPassController = TextEditingController();
-
-    final _setPinKey = GlobalKey<FormState>();
 
     return Scaffold(
       body: SafeArea(
@@ -36,7 +69,7 @@ class SetPasswordScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 10.h),
                     Text(
-                      'Minimum length password 8 character with Latter and number combination',
+                      'Minimum length password 6 character with Latter and number combination',
                       style: TextStyle(
                         fontSize: 15.sp,
                         color: Colors.grey,
@@ -54,7 +87,7 @@ class SetPasswordScreen extends StatelessWidget {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Password is required';
-                        } else if (value.length < 8) {
+                        } else if (value.length < 6) {
                           return 'Password must be at least 8 characters';
                         }
                         return null;
@@ -66,34 +99,32 @@ class SetPasswordScreen extends StatelessWidget {
                     SizedBox(height: 10.h),
 
                     // confirm password
-                    TextFormField(
-                      controller: confirmPassController,
-                      obscureText: true,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(hintText: 'Confirm Password'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Password is required';
-                        } else if (value.length < 8) {
-                          return 'Password must be at least 8 characters';
-                        } else if (value != newPasswordController.text) {
-                          // ✅ FIXED HERE
-                          return "Passwords don't match";
-                        }
-                        return null;
-                      },
-                    ),
+                    // TextFormField(
+                    //   controller: confirmPassController,
+                    //   obscureText: true,
+                    //   keyboardType: TextInputType.visiblePassword,
+                    //   decoration: InputDecoration(hintText: 'Confirm Password'),
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return 'Password is required';
+                    //     } else if (value.length < 6) {
+                    //       return 'Password must be at least 8 characters';
+                    //     } else if (value != newPasswordController.text) {
+                    //       // ✅ FIXED HERE
+                    //       return "Passwords don't match";
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
 
                     SizedBox(height: 13.h),
 
                     // filled button
                     FilledButton(
                       onPressed: () {
-                        if(_setPinKey.currentState!.validate()){
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Pin Set Successful'))
-                          );
-                        }
+
+                          updatePassword();
+
                       },
 
                       child: Text('Confirm', style: TextStyle()),

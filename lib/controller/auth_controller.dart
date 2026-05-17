@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:task_maneger/data/model/task_model.dart';
 import 'package:task_maneger/data/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
@@ -17,7 +18,17 @@ class AuthController{
 
     accessToken = token;
     userData = userModel;
+    getUserData();
   }
+
+  static Future<void> updateUserData(UserModel model)async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString('user-data', jsonEncode(model.toJson()));
+    userData = model;
+    print(userData);
+  }
+
+
 
 
   static Future<bool>isUserLogIn()async{
@@ -44,6 +55,14 @@ class AuthController{
     _logger.i(userData);
 
 
+  }
+
+
+  static Future<void>cleanUserData()async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.clear();
+    accessToken == null;
+    userData = null;
   }
 
 
