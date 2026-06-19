@@ -25,6 +25,9 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
   Future<void> otpSubmit() async {
     final String oldEmail = widget.email;
 
+    print(widget.email);
+    print(otpController.text);
+
     ApiResponse response = await ApiCaller.getRequest(
       URL: Urls.recoveryOtpVery(oldEmail, otpController.text),
     );

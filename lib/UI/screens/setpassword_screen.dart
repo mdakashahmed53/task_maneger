@@ -35,11 +35,8 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
       "OTP": widget.otp,
       "password":newPasswordController.text.trim()
     };
-
     ApiResponse response = await ApiCaller.postRequest(URL: Urls.recoveryPassword, body: requestBody);
-
     if(response.isSuccess){
-
       print(response.responseData['data'].toString());
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
     }else{

@@ -51,7 +51,7 @@ class ApiCaller{
     if(response.statusCode == 200 || response.statusCode == 201){
       return ApiResponse(responseCode: response.statusCode, responseData: jsonDecode(response.body), isSuccess: true);
     } else {
-      return ApiResponse(responseCode: response.statusCode, responseData: jsonDecode(response.body),errorMessage: jsonDecode(response.body), isSuccess: false);
+      return ApiResponse(responseCode: response.statusCode, responseData: jsonDecode(response.body), isSuccess: false);
     }
 
   }

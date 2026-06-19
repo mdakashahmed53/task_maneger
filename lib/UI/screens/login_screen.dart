@@ -11,6 +11,7 @@ import 'package:task_maneger/controller/auth_controller.dart';
 import 'package:task_maneger/data/model/api_response.dart';
 import 'package:task_maneger/data/model/user_model.dart';
 import 'package:task_maneger/data/service/api_caller.dart';
+import 'package:task_maneger/provider_state/login_provider.dart';
 import 'package:task_maneger/utils/app_color.dart';
 import 'package:http/http.dart' as http;
 import 'package:task_maneger/utils/urls.dart';
@@ -28,22 +29,15 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   final _logInKey = GlobalKey<FormState>();
 
+  final LogInProvider provider = LogInProvider();
+
   Future<void>_signIn()async{
-    Map<String,dynamic> requestBody = {
-      "email":emailController.text.trim(),
-      "password":passwordController.text.trim()
-    };
 
-    final ApiResponse response = await ApiCaller.postRequest(URL: Urls.Login, body: requestBody);
+    bool isSuccess = await provider.signIn(emailController.text.trim(), passwordController.text.trim());
 
-    // logic buji nai
-    if(response.isSuccess){
-      UserModel model = UserModel.fromJson(response.responseData['data']);
-      String accessToken = response.responseData['token'];
 
-      // user data & token save kora hoiche
-      AuthController.saveUserData(model, accessToken);
-      await AuthController.getUserData();
+    if(isSuccess){
+
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Log In...'))
@@ -51,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MainNavScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.responseData['data'].toString()))
+          SnackBar(content: Text('No user found, Check email and password and try again!'))
       );
     }
 

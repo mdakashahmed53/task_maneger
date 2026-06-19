@@ -9,6 +9,7 @@ import 'package:task_maneger/UI/screens/login_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:task_maneger/data/model/api_response.dart';
 import 'package:task_maneger/data/service/api_caller.dart';
+import 'package:task_maneger/provider_state/singup_provider.dart';
 import 'package:task_maneger/utils/app_color.dart';
 import 'package:http/http.dart' as http;
 import 'package:task_maneger/utils/urls.dart';
@@ -30,6 +31,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController confirmPassController = TextEditingController();
 
   final singUpkey = GlobalKey<FormState>();
+
+  final SignupProvider signupProvider = SignupProvider();
 
   // Future<void>singUp()async{
   //   final response = await http.post(Uri.parse(Urls.Registration),
@@ -64,33 +67,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
   //   }
   // }
 
+  // Future<void>signUp()async{
+  //   Map<String,dynamic>requestBody = {
+  //     "email":emailController.text.trim(),
+  //     "firstName":fristNameController.text,
+  //     "lastName":lastNameController.text,
+  //     "mobile":phoneController.text.trim(),
+  //     "password":newPasswordController.text.trim()
+  //   };
+  //
+  //   final ApiResponse response = await ApiCaller.postRequest(URL: Urls.Registration,
+  //   body: requestBody,
+  //   );
+  //
+  //   if(response.isSuccess){
+  //     _showSingUpAlert();
+  //     goLoginPage();
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.responseData['data'])));
+  //   }
+  //
+  // }
+
+
   Future<void>signUp()async{
-    Map<String,dynamic>requestBody = {
-      "email":emailController.text.trim(),
-      "firstName":fristNameController.text,
-      "lastName":lastNameController.text,
-      "mobile":phoneController.text.trim(),
-      "password":newPasswordController.text.trim()
-    };
+    bool isSuccess = await signupProvider.singUp(emailController.text.trim(), newPasswordController.text.trim(), fristNameController.text.trim(), lastNameController.text.trim(), phoneController.text.trim());
 
-    final ApiResponse response = await ApiCaller.postRequest(URL: Urls.Registration,
-    body: requestBody,
-    );
 
-    if(response.isSuccess){
+    if(isSuccess){
       _showSingUpAlert();
       goLoginPage();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.responseData['data'])));
+     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('This email is already registered! Try again with different email')));
     }
-
   }
 
 
 
   Future<void>goLoginPage()async{
     await Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+    Navigator.pop(context);
   }
   
   // alert dialog

@@ -10,6 +10,7 @@ import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:http/http.dart' as http;
 import 'package:task_maneger/data/model/api_response.dart';
 import 'package:task_maneger/data/service/api_caller.dart';
+import 'package:task_maneger/provider_state/add_task_provider.dart';
 import 'package:task_maneger/utils/urls.dart';
 
 import '../widgets/tm_appbar.dart';
@@ -25,30 +26,51 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
 
-  Future<void> addTask() async {
-    Map<String, dynamic> bodyRequest = {
-      "title": titleController.text,
-      "description": bodyController.text,
-      "status": "New",
-    };
+  final AddTaskProvider addTaskProvider = AddTaskProvider();
 
-    final ApiResponse response = await ApiCaller.postRequest(
-      URL: Urls.createTask,
-      body: bodyRequest,
-    );
+  // Future<void> addTask() async {
+  //   Map<String, dynamic> bodyRequest = {
+  //     "title": titleController.text,
+  //     "description": bodyController.text,
+  //     "status": "New",
+  //   };
+  //
+  //   final ApiResponse response = await ApiCaller.postRequest(
+  //     URL: Urls.createTask,
+  //     body: bodyRequest,
+  //   );
+  //
+  //   if (response.isSuccess) {
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text('Task Added')));
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => MainNavScreen()),
+  //     );
+  //   } else {
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text('Task Added Failed')));
+  //   }
+  // }
 
-    if (response.isSuccess) {
+
+  Future<void> addTask()async{
+    bool isSuccess = await addTaskProvider.addTask(titleController.text.trim(), bodyController.text.trim());
+
+    if(isSuccess){
       ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Task Added')));
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MainNavScreen()),
-      );
-    } else {
+              context,
+            ).showSnackBar(SnackBar(content: Text('Task Added')));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainNavScreen()),
+            );
+    }else {
       ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Task Added Failed')));
+              context,
+            ).showSnackBar(SnackBar(content: Text('Task Added Failed')));
     }
   }
 

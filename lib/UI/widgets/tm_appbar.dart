@@ -26,11 +26,15 @@ class _TmAppBarState extends State<TmAppBar> {
     setState(() {
       getDataAppbar();
     });
+
+
   }
 
   void getDataAppbar()async{
     await AuthController.getUserData();
+    setState(() {
 
+    });
   }
 
 
