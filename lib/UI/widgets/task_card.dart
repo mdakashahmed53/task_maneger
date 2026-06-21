@@ -62,28 +62,6 @@ class _TaskCardState extends State<TaskCard> {
     }
   }
 
-  // Future<void> changeStatus(String status) async {
-  //   final ApiResponse response = await ApiCaller.getRequest(
-  //     URL: Urls.updateTaskStatus(widget.taskModel.id, status),
-  //   );
-
-  //   setState(() {});
-
-  //   if (response.isSuccess) {
-  //     Navigator.pop(context);
-
-  //     widget.refreshParent();
-  //     ScaffoldMessenger.of(
-  //       context,
-  //     ).showSnackBar(SnackBar(content: Text('Task Status Change')));
-  //   } else {
-  //     Navigator.pop(context);
-  //     ScaffoldMessenger.of(
-  //       context,
-  //     ).showSnackBar(SnackBar(content: Text('Task Status Change Failed')));
-  //   }
-  // }
-
   Future<void> changeStatus(String status) async {
     final bool isSuccess = await changeStatusProvider.changeStatus(
       widget.taskModel.id,
@@ -108,8 +86,32 @@ class _TaskCardState extends State<TaskCard> {
             context,
           ).showSnackBar(SnackBar(content: Text('Task Status Change Failed')));
         }
-    }
   }
+  
+
+  // Future<void> changeStatus(String status) async {
+  //   final ApiResponse response = await ApiCaller.getRequest(
+  //     URL: Urls.updateTaskStatus(widget.taskModel.id, status),
+  //   );
+
+  //   setState(() {});
+
+  //   if (response.isSuccess) {
+  //     Navigator.pop(context);
+
+  //     widget.refreshParent();
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text('Task Status Change')));
+  //   } else {
+  //     Navigator.pop(context);
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text('Task Status Change Failed')));
+  //   }
+  // }
+
+  
 
   void _showChangeStatusDialoge() {
     showDialog(
