@@ -4,6 +4,7 @@ import 'package:task_maneger/UI/screens/task_details_view_screen.dart';
 import 'package:task_maneger/data/model/api_response.dart';
 import 'package:task_maneger/data/model/task_model.dart';
 import 'package:task_maneger/data/service/api_caller.dart';
+import 'package:task_maneger/provider_state/delete_task_provider.dart';
 import 'package:task_maneger/utils/urls.dart';
 
 class TaskCard extends StatefulWidget {
@@ -22,26 +23,42 @@ class TaskCard extends StatefulWidget {
 }
 
 class _TaskCardState extends State<TaskCard> {
+  final DeleteTaskProvider deleteTaskProvider = DeleteTaskProvider();
 
+  // Future<void> deleteTask() async {
+  //   final ApiResponse response = await ApiCaller.getRequest(
+  //     URL: Urls.taskDelete(widget.taskModel.id),
+  //   );
+
+  //   setState(() {});
+
+  //   if (response.isSuccess) {
+  //     widget.refreshParent();
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text('Task Deleted')));
+  //   } else {
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text('Task Delete Failed')));
+  //   }
+  //   print(response.responseData);
+  // }
 
   Future<void> deleteTask() async {
-    final ApiResponse response = await ApiCaller.getRequest(
-      URL: Urls.taskDelete(widget.taskModel.id),
-    );
+    bool isSuccess = await deleteTaskProvider.deleteTask(widget.taskModel.id);
 
-    setState(() {});
 
-    if (response.isSuccess) {
-      widget.refreshParent();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Task Deleted')));
+    if(isSuccess){
+       widget.refreshParent();
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Task Deleted')));
     } else {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Task Delete Failed')));
     }
-    print(response.responseData);
   }
 
   Future<void> changeStatus(String status) async {
@@ -84,7 +101,6 @@ class _TaskCardState extends State<TaskCard> {
                   ),
                   onTap: () {
                     changeStatus('New');
-
                   },
 
                   trailing: Icon(
