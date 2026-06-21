@@ -4,6 +4,7 @@ import 'package:task_maneger/UI/screens/task_details_view_screen.dart';
 import 'package:task_maneger/data/model/api_response.dart';
 import 'package:task_maneger/data/model/task_model.dart';
 import 'package:task_maneger/data/service/api_caller.dart';
+import 'package:task_maneger/provider_state/change_status_provider.dart';
 import 'package:task_maneger/provider_state/delete_task_provider.dart';
 import 'package:task_maneger/utils/urls.dart';
 
@@ -24,6 +25,7 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   final DeleteTaskProvider deleteTaskProvider = DeleteTaskProvider();
+  final ChangeStatusProvider changeStatusProvider = ChangeStatusProvider();
 
   // Future<void> deleteTask() async {
   //   final ApiResponse response = await ApiCaller.getRequest(
@@ -48,12 +50,11 @@ class _TaskCardState extends State<TaskCard> {
   Future<void> deleteTask() async {
     bool isSuccess = await deleteTaskProvider.deleteTask(widget.taskModel.id);
 
-
-    if(isSuccess){
-       widget.refreshParent();
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Task Deleted')));
+    if (isSuccess) {
+      widget.refreshParent();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Task Deleted')));
     } else {
       ScaffoldMessenger.of(
         context,
@@ -61,25 +62,52 @@ class _TaskCardState extends State<TaskCard> {
     }
   }
 
+  // Future<void> changeStatus(String status) async {
+  //   final ApiResponse response = await ApiCaller.getRequest(
+  //     URL: Urls.updateTaskStatus(widget.taskModel.id, status),
+  //   );
+
+  //   setState(() {});
+
+  //   if (response.isSuccess) {
+  //     Navigator.pop(context);
+
+  //     widget.refreshParent();
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text('Task Status Change')));
+  //   } else {
+  //     Navigator.pop(context);
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text('Task Status Change Failed')));
+  //   }
+  // }
+
   Future<void> changeStatus(String status) async {
-    final ApiResponse response = await ApiCaller.getRequest(
-      URL: Urls.updateTaskStatus(widget.taskModel.id, status),
+    final bool isSuccess = await changeStatusProvider.changeStatus(
+      widget.taskModel.id,
+      status,
     );
 
-    setState(() {});
 
-    if (response.isSuccess) {
-      Navigator.pop(context);
+    setState(() {
+      
+    });
 
-      widget.refreshParent();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Task Status Change')));
-    } else {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Task Status Change Failed')));
+    if(isSuccess){
+       Navigator.pop(context);
+
+          widget.refreshParent();
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Task Status Change')));
+    } else{
+        Navigator.pop(context);
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Task Status Change Failed')));
+        }
     }
   }
 
