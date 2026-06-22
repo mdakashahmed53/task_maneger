@@ -55,22 +55,21 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   //   }
   // }
 
+  Future<void> addTask() async {
+    bool isSuccess = await addTaskProvider.addTask(
+      titleController.text.trim(),
+      bodyController.text.trim(),
+    );
 
-  Future<void> addTask()async{
-    bool isSuccess = await addTaskProvider.addTask(titleController.text.trim(), bodyController.text.trim());
-
-    if(isSuccess){
+    if (isSuccess) {
       ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Task Added')));
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => MainNavScreen()),
-            );
-    }else {
+        context,
+      ).showSnackBar(SnackBar(content: Text('Task Added')));
+      Navigator.pop(context);
+    } else {
       ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Task Added Failed')));
+        context,
+      ).showSnackBar(SnackBar(content: Text('Task Added Failed')));
     }
   }
 

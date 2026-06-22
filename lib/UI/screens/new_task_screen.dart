@@ -1,20 +1,20 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
-import 'package:task_maneger/UI/screens/add_task_screen.dart';
-import 'package:task_maneger/UI/widgets/screen_background.dart';
-import 'package:task_maneger/controller/auth_controller.dart';
 import 'package:task_maneger/data/model/api_response.dart';
 import 'package:task_maneger/data/model/task_model.dart';
 import 'package:task_maneger/data/model/task_status_count_model.dart';
 import 'package:task_maneger/data/service/api_caller.dart';
 import 'package:task_maneger/utils/urls.dart';
 
+import '../../provider_state/get_new_task_provider.dart';
+import '../widgets/screen_background.dart';
 import '../widgets/task_card.dart';
 import '../widgets/task_count_status_card.dart';
+import 'add_task_screen.dart';
 
 class NewTaskScreen extends StatefulWidget {
   const NewTaskScreen({super.key});
@@ -30,12 +30,14 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     super.initState();
     getAllTaskCount();
     getAllNewTask();
+
   }
 
   static final Logger _logger = Logger();
 
   List<TaskStatusCountModel> taskCountByStatus = [];
   List<TaskModel> newTasks = [];
+
 
   Future<void> getAllTaskCount() async {
     final ApiResponse response = await ApiCaller.getRequest(
@@ -65,30 +67,48 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     _logger.i(taskCountByStatus.length);
   }
 
+  // Future<void> getAllNewTask() async {
+  //   final ApiResponse response = await ApiCaller.getRequest(
+  //     URL: Urls.taskByStatus('New'),
+  //   );
+  //
+  //   List<TaskModel> task = [];
+  //
+  //   if (response.isSuccess) {
+  //     for (Map<String, dynamic> jsonTask in response.responseData['data']) {
+  //       task.add(TaskModel.fromJson(jsonTask));
+  //     }
+  //   } else {
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text('Task Empty')));
+  //   }
+  //
+  //   setState(() {
+  //     newTasks = task;
+  //   });
+  //
+  //   _logger.i(newTasks.length);
+  //   _logger.i(task.length);
+  //   _logger.i(response.responseData);
+  // }
+
   Future<void> getAllNewTask() async {
-    final ApiResponse response = await ApiCaller.getRequest(
-      URL: Urls.taskByStatus('New'),
-    );
+    final getNewTaskProvider = context.read<GetNewTaskProvider>();
 
-    List<TaskModel> task = [];
+    bool isSuccess = await getNewTaskProvider.getAllNewTask();
 
-    if (response.isSuccess) {
-      for (Map<String, dynamic> jsonTask in response.responseData['data']) {
-        task.add(TaskModel.fromJson(jsonTask));
-      }
-    } else {
+    if (isSuccess) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Task Screen')));
+    }else{
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Task Empty')));
     }
 
-    setState(() {
-      newTasks = task;
-    });
 
-    _logger.i(newTasks.length);
-    _logger.i(task.length);
-    _logger.i(response.responseData);
   }
 
   @override
@@ -120,19 +140,24 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               SizedBox(height: 10),
 
               Expanded(
-                child: ListView.builder(
-                  itemCount: newTasks.length,
+                child: Consumer<GetNewTaskProvider>(
+                  builder: (context, provider, _) {
+                    return ListView.builder(
+                      itemCount: provider.allTasks.length,
 
-                  itemBuilder: (context, index) {
-                    return TaskCard(
-                      taskModel: newTasks[index],
-                      statusColor: Colors.blue,
-                      refreshParent: () {
-                        getAllNewTask();
-                        getAllTaskCount();
+                      itemBuilder: (context, index) {
+
+                        return TaskCard(
+                          taskModel: provider.allTasks[index],
+                          statusColor: Colors.blue,
+                          refreshParent: () {
+                            getAllNewTask();
+                            getAllTaskCount();
+                          },
+                        );
                       },
                     );
-                  },
+                  }
                 ),
               ),
             ],

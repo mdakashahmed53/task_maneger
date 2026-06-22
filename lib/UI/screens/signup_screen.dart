@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:task_maneger/UI/screens/login_screen.dart';
 import 'package:task_maneger/UI/widgets/screen_background.dart';
 import 'package:task_maneger/data/model/api_response.dart';
@@ -22,7 +23,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
   TextEditingController emailController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController fristNameController = TextEditingController();
@@ -89,49 +89,58 @@ class _SignUpScreenState extends State<SignUpScreen> {
   //
   // }
 
+  Future<void> signUp() async {
+    // final signupProvider = context.read<SignupProvider>();
 
-  Future<void>signUp()async{
-    bool isSuccess = await signupProvider.singUp(emailController.text.trim(), newPasswordController.text.trim(), fristNameController.text.trim(), lastNameController.text.trim(), phoneController.text.trim());
+    bool isSuccess = await signupProvider.singUp(
+      emailController.text.trim(),
+      newPasswordController.text.trim(),
+      fristNameController.text.trim(),
+      lastNameController.text.trim(),
+      phoneController.text.trim(),
+    );
 
-
-    if(isSuccess){
-      _showSingUpAlert();
+    if (isSuccess) {
       goLoginPage();
+      _showSingUpAlert();
     } else {
-     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('This email is already registered! Try again with different email')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'This email is already registered! Try again with different email',
+          ),
+        ),
+      );
     }
   }
 
-
-
-  Future<void>goLoginPage()async{
+  Future<void> goLoginPage() async {
     await Future.delayed(Duration(seconds: 2));
     Navigator.pop(context);
+    Navigator.pop(context);
   }
-  
+
   // alert dialog
-  
-  void _showSingUpAlert(){
-    showDialog(context: context, builder: (context){
-      return AlertDialog(
 
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Lottie.asset('assets/anim/done.json', height: 200),
-            Text('Successful', style: GoogleFonts.lobster(
-              fontSize: 30
-            ),)
-          ],
-        ),
-      );
-    });
+  void _showSingUpAlert() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset('assets/anim/done.json', height: 200),
+              Text('Successful', style: GoogleFonts.lobster(fontSize: 30)),
+            ],
+          ),
+        );
+      },
+    );
   }
-
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: ScreenBackground(
@@ -146,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     SizedBox(height: 40.h),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         _showSingUpAlert();
                       },
                       child: Text(
@@ -170,9 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       decoration: const InputDecoration(hintText: 'First Name'),
                     ),
 
-                    SizedBox(
-                      height: 10.h,
-                    ),
+                    SizedBox(height: 10.h),
                     TextFormField(
                       controller: lastNameController,
                       validator: (value) {
@@ -226,8 +233,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: newPasswordController,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
-                      decoration:
-                      const InputDecoration(hintText: 'New Password'),
+                      decoration: const InputDecoration(
+                        hintText: 'New Password',
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Password is required';
@@ -245,8 +253,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: confirmPassController,
                       obscureText: true,
                       keyboardType: TextInputType.visiblePassword,
-                      decoration:
-                      const InputDecoration(hintText: 'Confirm Password'),
+                      decoration: const InputDecoration(
+                        hintText: 'Confirm Password',
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Password is required';
@@ -265,13 +274,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     FilledButton(
                       onPressed: () {
                         if (singUpkey.currentState!.validate()) {
-
                           // ScaffoldMessenger.of(context).showSnackBar(
                           //   const SnackBar(content: Text('Sign Up ')),
                           // );
 
                           signUp();
-
                         }
                       },
                       child: const Icon(
@@ -305,8 +312,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              LoginScreen(),
+                                          builder: (context) => LoginScreen(),
                                         ),
                                       );
                                     },
